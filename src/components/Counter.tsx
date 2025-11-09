@@ -1,4 +1,4 @@
-import React from "react";
+import Decimal from "decimal.js";
 import type { Settings, Sheet } from "@/types";
 import Card from "@mui/material/Card";
 import { BorderBox } from "@/components/BorderBox";
@@ -33,7 +33,9 @@ export const Counter = (props: CounterProps) => {
   }
 
   const handleIncrement = () => {
-    const nextValue = counter + Number(settings.step);
+    if (isDisabledCounter) return;
+    const c = new Decimal(counter);
+    const nextValue = c.plus(settings.step).toNumber();
     if (nextValue <= settings.max) {
       setSheet("counter");
       setCount(nextValue);
@@ -41,6 +43,7 @@ export const Counter = (props: CounterProps) => {
   };
 
   const handleReset = () => {
+    if (isDisabledCounter) return;
     setSheet("counter");
     setCount(settings.min);
   };

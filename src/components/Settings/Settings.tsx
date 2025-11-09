@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import Decimal from "decimal.js";
 import Card from "@mui/material/Card";
 import type { Settings as SettingsType, Sheet } from "@/types";
 import {
@@ -10,10 +11,11 @@ import {
 import { BorderBox } from "@/components/BorderBox";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { Button } from "./Button";
+import { Button } from "../Button";
 import DoneIcon from "@mui/icons-material/Done";
-import { TextField } from "./TextField";
+import { TextField } from "../TextField/TextField";
 import { blueGrey, lightBlue, green } from "@mui/material/colors";
+import { settingStyle } from "./styles";
 
 type SettingsProps = {
   settings?: SettingsType;
@@ -23,13 +25,6 @@ type SettingsProps = {
   saveSettings: (v: SettingsType) => void;
   setError: (v: boolean) => void;
   setSheet: (v: Sheet) => void;
-};
-
-const settingStyle = {
-  color: lightBlue.A400,
-  fontWeight: 500,
-  fontSize: 40,
-  marginRight: "auto",
 };
 
 export const Settings = (props: SettingsProps) => {
@@ -55,6 +50,11 @@ export const Settings = (props: SettingsProps) => {
       ...settings,
       [key]: v,
     } as SettingsType;
+
+    if (key === "step") {
+      newSettings.decimalPlaces = new Decimal(v || 0).decimalPlaces();
+    }
+
     setSettings(newSettings);
     setError(!validateSettings(newSettings));
     setSheet("settings");
@@ -74,6 +74,7 @@ export const Settings = (props: SettingsProps) => {
               <Grid>
                 <TextField
                   value={settings?.max}
+                  precision={settings?.decimalPlaces}
                   error={!isValidMax}
                   setValue={(v) => handleChange(v as number, "max")}
                 />
@@ -84,6 +85,7 @@ export const Settings = (props: SettingsProps) => {
               <Grid>
                 <TextField
                   value={settings?.min}
+                  precision={settings?.decimalPlaces}
                   error={!isValidMin}
                   setValue={(v) => handleChange(v as number, "min")}
                 />
@@ -94,6 +96,7 @@ export const Settings = (props: SettingsProps) => {
               <Grid>
                 <TextField
                   value={settings?.step}
+                  precision={settings?.decimalPlaces}
                   error={!isValidStep}
                   setValue={(v) => handleChange(v as number, "step")}
                 />

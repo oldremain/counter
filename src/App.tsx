@@ -4,10 +4,9 @@ import { DEFAULT_SETTINGS, LOCAL_STORAGE_KEY, validateSettings } from "./lib";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Settings } from "@/components/Settings";
+import { Settings } from "@/components/Settings/Settings";
 import { Counter } from "@/components/Counter";
 import { blueGrey } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
 
 export const App = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -45,6 +44,7 @@ export const App = () => {
       min: settings.min,
       max: settings.max,
       step: settings.step,
+      decimalPlaces: settings.decimalPlaces,
     });
 
     setCounter(settings.min || 0);
@@ -68,8 +68,6 @@ export const App = () => {
             }}
           >
             <Grid container spacing={4} sx={{ width: "100%" }}>
-              {/* //TODO delete this */}
-              {/* <Typography color="#fff">{JSON.stringify(settings)}</Typography> */}
               <Grid size="grow">
                 <Settings
                   settings={settings}

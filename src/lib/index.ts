@@ -4,6 +4,7 @@ export const DEFAULT_SETTINGS = {
   min: 0,
   max: 5,
   step: 1,
+  decimalPlaces: 1,
 };
 
 export const LOCAL_STORAGE_KEY = "minmax";
