@@ -44,7 +44,6 @@ export const App = () => {
       min: settings.min,
       max: settings.max,
       step: settings.step,
-      decimalPlaces: settings.decimalPlaces,
     });
 
     setCounter(settings.min || 0);
@@ -67,8 +66,14 @@ export const App = () => {
               alignItems: "center",
             }}
           >
-            <Grid container spacing={4} sx={{ width: "100%" }}>
-              <Grid size="grow">
+            <Grid
+              container
+              spacing={4}
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Grid size={{ xs: 12, lg: 6 }}>
                 <Settings
                   settings={settings}
                   sheet={sheet}
@@ -79,7 +84,7 @@ export const App = () => {
                   setSheet={setSheet}
                 />
               </Grid>
-              <Grid size="grow">
+              <Grid size={{ xs: 12, lg: 6 }}>
                 <Counter
                   counter={counter}
                   settings={settings}

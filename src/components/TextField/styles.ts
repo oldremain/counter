@@ -5,6 +5,7 @@ import type { SxProps } from "@mui/material/styles";
 const formControlStyles = {
   minWidth: "230px",
   transition: "all 0.15s ease",
+  width: "100%",
   ".MuiOutlinedInput-notchedOutline": {
     borderColor: "gray",
   },
@@ -21,6 +22,7 @@ const formControlStyles = {
 
 const inputStyles = {
   backgroundColor: "#fff",
+  fontSize: { xs: "20px", sm: "18px" },
   "& input[type=number]": {
     MozAppearance: "textfield",
   },

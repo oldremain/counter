@@ -70,11 +70,18 @@ export const Counter = (props: CounterProps) => {
             fontWeight: 500,
             fontSize: isDisabledCounter ? 30 : 80,
             textAlign: "center",
+            padding: { xs: 0, sm: 2 },
+            borderWidth: { xs: "0", sm: "2px" },
           }}
         >
           {boxContent}
         </BorderBox>
-        <BorderBox>
+        <BorderBox
+          sx={{
+            padding: { xs: 0, sm: 2 },
+            borderWidth: { xs: "0", sm: "2px" },
+          }}
+        >
           <Stack direction={"row"} gap={2}>
             <Button
               variant="contained"

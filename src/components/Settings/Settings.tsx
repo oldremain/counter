@@ -51,10 +51,6 @@ export const Settings = (props: SettingsProps) => {
       [key]: v,
     } as SettingsType;
 
-    if (key === "step") {
-      newSettings.decimalPlaces = new Decimal(v || 0).decimalPlaces();
-    }
-
     setSettings(newSettings);
     setError(!validateSettings(newSettings));
     setSheet("settings");
@@ -66,37 +62,50 @@ export const Settings = (props: SettingsProps) => {
 
   return (
     <Card sx={{ background: blueGrey[900] }} raised>
-      <BorderBox>
+      <BorderBox
+        sx={{ padding: { xs: 0, sm: 2 }, borderWidth: { xs: "0", sm: "2px" } }}
+      >
         <BorderBox sx={{ mb: 2 }}>
           <Stack spacing={2}>
-            <Grid container spacing={2}>
-              <Grid sx={settingStyle}>max value:</Grid>
-              <Grid>
+            <Grid container spacing={{ xs: 0, sm: 2 }}>
+              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+                max value:
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   value={settings?.max}
-                  precision={settings?.decimalPlaces}
                   error={!isValidMax}
                   setValue={(v) => handleChange(v as number, "max")}
                 />
               </Grid>
             </Grid>
-            <Grid container sx={{ alignItems: "center" }} spacing={2}>
-              <Grid sx={settingStyle}>min value:</Grid>
-              <Grid>
+            <Grid
+              container
+              sx={{ alignItems: "center" }}
+              spacing={{ xs: 0, sm: 2 }}
+            >
+              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+                min value:
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   value={settings?.min}
-                  precision={settings?.decimalPlaces}
                   error={!isValidMin}
                   setValue={(v) => handleChange(v as number, "min")}
                 />
               </Grid>
             </Grid>
-            <Grid container sx={{ alignItems: "center" }} spacing={2}>
-              <Grid sx={settingStyle}>step size:</Grid>
-              <Grid>
+            <Grid
+              container
+              sx={{ alignItems: "center" }}
+              spacing={{ xs: 0, sm: 2 }}
+            >
+              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+                inc size:
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
                   value={settings?.step}
-                  precision={settings?.decimalPlaces}
                   error={!isValidStep}
                   setValue={(v) => handleChange(v as number, "step")}
                 />
@@ -110,7 +119,7 @@ export const Settings = (props: SettingsProps) => {
             endIcon={
               isEditing && !error && <DoneIcon sx={{ color: green.A700 }} />
             }
-            sx={{ width: "50%", margin: "auto" }}
+            sx={{ width: { xs: "100%", sm: "50%" }, margin: "auto" }}
             disabled={!isEditing || error || sheet === "counter"}
             onClick={handleSaveSettings}
           >

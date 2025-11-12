@@ -1,5 +1,7 @@
 import React from "react";
 import Decimal from "decimal.js";
+import type { SxProps } from "@mui/material/styles";
+import type { Theme } from "@mui/material/styles";
 import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -13,16 +15,18 @@ import { formControlStyles, inputStyles, arrowStyles } from "./styles";
 type TextFieldProps = {
   value?: number;
   error?: boolean;
-  precision?: number;
+  sx?: SxProps<Theme>;
   setValue: (v: number | string) => void;
 };
 
 export const TextField = ({
   value,
-  precision,
   error,
   setValue,
+  sx = {},
 }: TextFieldProps) => {
+  const precision = new Decimal(value || 0).decimalPlaces();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value ? +e.currentTarget.value : "");
   };
@@ -41,7 +45,10 @@ export const TextField = ({
   };
 
   return (
-    <FormControl variant="outlined" sx={formControlStyles}>
+    <FormControl
+      variant="outlined"
+      sx={Object.assign(formControlStyles || {}, sx)}
+    >
       <OutlinedInput
         value={value}
         type="number"
