@@ -1,8 +1,7 @@
 import { grey, red } from "@mui/material/colors";
-import type { Theme } from "@mui/material/styles";
 import type { SxProps } from "@mui/material/styles";
 
-const formControlStyles = {
+export const formControl: SxProps = {
   minWidth: "230px",
   transition: "all 0.15s ease",
   width: "100%",
@@ -18,9 +17,9 @@ const formControlStyles = {
   ".Mui-focused .MuiInputAdornment-root": {
     display: "flex",
   },
-} as SxProps<Theme>;
+};
 
-const inputStyles = {
+export const input: SxProps = {
   backgroundColor: "#fff",
   fontSize: { xs: "20px", sm: "18px" },
   "& input[type=number]": {
@@ -37,14 +36,14 @@ const inputStyles = {
   "&.Mui-error": {
     backgroundColor: red[100],
   },
-} as SxProps<Theme>;
+};
 
-const arrowStyles = {
+export const arrow: SxProps = {
   cursor: "pointer",
   transition: "all 0.15s ease",
   "&:hover": {
     backgroundColor: grey[100],
   },
-} as SxProps<Theme>;
+};
 
-export { formControlStyles, inputStyles, arrowStyles };
+export const iconBtn: SxProps = { width: "18px", height: "18px" };

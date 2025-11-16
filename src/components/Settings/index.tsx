@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Decimal from "decimal.js";
 import Card from "@mui/material/Card";
 import type { Settings as SettingsType, Sheet } from "@/types";
 import {
@@ -13,9 +12,8 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import { Button } from "../Button";
 import DoneIcon from "@mui/icons-material/Done";
-import { TextField } from "../TextField/TextField";
-import { blueGrey, lightBlue, green } from "@mui/material/colors";
-import { settingStyle } from "./styles";
+import { TextField } from "@/components/TextField/index";
+import * as s from "./Settings.styles";
 
 type SettingsProps = {
   settings?: SettingsType;
@@ -61,14 +59,12 @@ export const Settings = (props: SettingsProps) => {
   };
 
   return (
-    <Card sx={{ background: blueGrey[900] }} raised>
-      <BorderBox
-        sx={{ padding: { xs: 0, sm: 2 }, borderWidth: { xs: "0", sm: "2px" } }}
-      >
+    <Card sx={s.cardWrp} raised>
+      <BorderBox sx={s.settingsWrp}>
         <BorderBox sx={{ mb: 2 }}>
           <Stack spacing={2}>
             <Grid container spacing={{ xs: 0, sm: 2 }}>
-              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+              <Grid sx={s.settings} size={{ xs: 12, sm: 6 }}>
                 max value:
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
@@ -84,7 +80,7 @@ export const Settings = (props: SettingsProps) => {
               sx={{ alignItems: "center" }}
               spacing={{ xs: 0, sm: 2 }}
             >
-              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+              <Grid sx={s.settings} size={{ xs: 12, sm: 6 }}>
                 min value:
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
@@ -100,7 +96,7 @@ export const Settings = (props: SettingsProps) => {
               sx={{ alignItems: "center" }}
               spacing={{ xs: 0, sm: 2 }}
             >
-              <Grid sx={settingStyle} size={{ xs: 12, sm: 6 }}>
+              <Grid sx={s.settings} size={{ xs: 12, sm: 6 }}>
                 inc size:
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
@@ -116,10 +112,8 @@ export const Settings = (props: SettingsProps) => {
         <BorderBox textAlign={"center"}>
           <Button
             variant="contained"
-            endIcon={
-              isEditing && !error && <DoneIcon sx={{ color: green.A700 }} />
-            }
-            sx={{ width: { xs: "100%", sm: "50%" }, margin: "auto" }}
+            endIcon={isEditing && !error && <DoneIcon sx={s.doneIcon} />}
+            sx={s.setBtn}
             disabled={!isEditing || error || sheet === "counter"}
             onClick={handleSaveSettings}
           >

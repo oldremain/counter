@@ -2,12 +2,13 @@ import Decimal from "decimal.js";
 import type { Settings, Sheet } from "@/types";
 import Card from "@mui/material/Card";
 import { BorderBox } from "@/components/BorderBox";
-import { Button } from "./Button";
+import { Button } from "@/components/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { blueGrey, lightBlue, red } from "@mui/material/colors";
+import { lightBlue, red } from "@mui/material/colors";
+import * as s from "./Counter.styles";
 
 type CounterProps = {
   counter: number;
@@ -49,39 +50,19 @@ export const Counter = (props: CounterProps) => {
   };
 
   return (
-    <Card sx={{ background: blueGrey[900], height: "100%" }} raised>
-      <BorderBox
-        sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+    <Card sx={s.card} raised>
+      <BorderBox sx={s.boxWrp}>
         <BorderBox
           sx={{
-            mb: 2,
-            flexGrow: 1,
-            minHeight: "172px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            ...s.counterWrp,
             color:
               counter === settings.max || error ? red.A700 : lightBlue.A400,
-            fontWeight: 500,
             fontSize: isDisabledCounter ? 30 : 80,
-            textAlign: "center",
-            padding: { xs: 0, sm: 2 },
-            borderWidth: { xs: "0", sm: "2px" },
           }}
         >
           {boxContent}
         </BorderBox>
-        <BorderBox
-          sx={{
-            padding: { xs: 0, sm: 2 },
-            borderWidth: { xs: "0", sm: "2px" },
-          }}
-        >
+        <BorderBox sx={s.btnWrp}>
           <Stack direction={"row"} gap={2}>
             <Button
               variant="contained"
@@ -93,7 +74,7 @@ export const Counter = (props: CounterProps) => {
             >
               inc
             </Button>
-            <Box sx={{ flexGrow: 1, cursor: "not-allowed" }}>
+            <Box sx={s.resetBtnWrp}>
               <Button
                 variant="contained"
                 color="error"

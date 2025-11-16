@@ -4,9 +4,9 @@ import { DEFAULT_SETTINGS, LOCAL_STORAGE_KEY, validateSettings } from "./lib";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Settings } from "@/components/Settings/Settings";
-import { Counter } from "@/components/Counter";
-import { blueGrey } from "@mui/material/colors";
+import { Settings } from "@/components/Settings/index";
+import { Counter } from "@/components/Counter/index";
+import * as s from "./App.styles";
 
 export const App = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -54,25 +54,9 @@ export const App = () => {
   return (
     <>
       {isInitialized && (
-        <Box
-          sx={{
-            backgroundColor: blueGrey[900],
-          }}
-        >
-          <Container
-            sx={{
-              minHeight: "100vh",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Grid
-              container
-              spacing={4}
-              sx={{
-                width: "100%",
-              }}
-            >
+        <Box sx={s.appContainer}>
+          <Container sx={s.counterContainer}>
+            <Grid container spacing={4} sx={s.gridContainer}>
               <Grid size={{ xs: 12, lg: 6 }}>
                 <Settings
                   settings={settings}

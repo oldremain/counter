@@ -9,8 +9,7 @@ import Stack from "@mui/material/Stack";
 import IconButton from "@mui/material/IconButton";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-//WARN try use CSS modules
-import { formControlStyles, inputStyles, arrowStyles } from "./styles";
+import * as s from "./TextField.styles";
 
 type TextFieldProps = {
   value?: number;
@@ -45,33 +44,30 @@ export const TextField = ({
   };
 
   return (
-    <FormControl
-      variant="outlined"
-      sx={Object.assign(formControlStyles || {}, sx)}
-    >
+    <FormControl variant="outlined" sx={Object.assign(s.formControl || {}, sx)}>
       <OutlinedInput
         value={value}
         type="number"
         autoComplete="off"
-        sx={inputStyles}
+        sx={s.input}
         endAdornment={
           <InputAdornment position="end">
             <Stack fontSize={"18px"}>
               <IconButton
-                sx={{ width: "18px", height: "18px" }}
+                sx={s.iconBtn}
                 onClick={() => handleClick("inc")}
                 onMouseDown={(e) => e.preventDefault()}
                 onMouseUp={(e) => e.preventDefault()}
               >
-                <ArrowDropUpIcon sx={arrowStyles} fontSize="inherit" />
+                <ArrowDropUpIcon sx={s.arrow} fontSize="inherit" />
               </IconButton>
               <IconButton
-                sx={{ width: "18px", height: "18px" }}
+                sx={s.iconBtn}
                 onClick={() => handleClick("dec")}
                 onMouseDown={(e) => e.preventDefault()}
                 onMouseUp={(e) => e.preventDefault()}
               >
-                <ArrowDropDownIcon sx={arrowStyles} fontSize="inherit" />
+                <ArrowDropDownIcon sx={s.arrow} fontSize="inherit" />
               </IconButton>
             </Stack>
           </InputAdornment>
