@@ -11,19 +11,14 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import * as s from "./TextField.styles";
 
-type TextFieldProps = {
+type Props = {
   value?: number;
   error?: boolean;
   sx?: SxProps<Theme>;
   setValue: (v: number | string) => void;
 };
 
-export const TextField = ({
-  value,
-  error,
-  setValue,
-  sx = {},
-}: TextFieldProps) => {
+export const TextField = ({ value, error, setValue, sx = {} }: Props) => {
   const precision = new Decimal(value || 0).decimalPlaces();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

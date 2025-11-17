@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import type { Settings as SettingsType, Sheet } from "./types";
-import { DEFAULT_SETTINGS, LOCAL_STORAGE_KEY, validateSettings } from "./lib";
+import type { Settings as SettingsType, Sheet } from "@common/types";
+import {
+  DEFAULT_SETTINGS,
+  LOCAL_STORAGE_KEY,
+  validateSettings,
+} from "@common/lib";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Settings } from "@/components/Settings/index";
-import { Counter } from "@/components/Counter/index";
+import { Settings } from "../features/Settings/Settings";
+import { Counter } from "../features/Counter/Counter";
 import * as s from "./App.styles";
 
 export const App = () => {

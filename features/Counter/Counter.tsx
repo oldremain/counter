@@ -1,8 +1,8 @@
 import Decimal from "decimal.js";
-import type { Settings, Sheet } from "@/types";
+import type { Settings, Sheet } from "@common/types";
 import Card from "@mui/material/Card";
-import { BorderBox } from "@/components/BorderBox";
-import { Button } from "@/components/Button";
+import { BorderBox } from "@common/components/BorderBox";
+import { Button } from "@common/components/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
@@ -10,7 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { lightBlue, red } from "@mui/material/colors";
 import * as s from "./Counter.styles";
 
-type CounterProps = {
+type Props = {
   counter: number;
   settings: Settings;
   sheet: Sheet;
@@ -19,10 +19,12 @@ type CounterProps = {
   setSheet: (v: Sheet) => void;
 };
 
-export const Counter = (props: CounterProps) => {
+export const Counter = (props: Props) => {
   const { counter, settings, sheet, error, setCount, setSheet } = props;
 
   const isDisabledCounter = error || sheet === "settings";
+  const isDisabledIncrement = counter >= settings.max;
+  const isDisabledReset = counter === settings.min;
 
   let boxContent;
   if (error) {
@@ -34,13 +36,11 @@ export const Counter = (props: CounterProps) => {
   }
 
   const handleIncrement = () => {
-    if (isDisabledCounter) return;
+    if (isDisabledCounter || isDisabledIncrement) return;
     const c = new Decimal(counter);
     const nextValue = c.plus(settings.step).toNumber();
-    if (nextValue <= settings.max) {
-      setSheet("counter");
-      setCount(nextValue);
-    }
+    setSheet("counter");
+    setCount(nextValue);
   };
 
   const handleReset = () => {
@@ -55,8 +55,7 @@ export const Counter = (props: CounterProps) => {
         <BorderBox
           sx={{
             ...s.counterWrp,
-            color:
-              counter === settings.max || error ? red.A700 : lightBlue.A400,
+            color: isDisabledIncrement || error ? red.A700 : lightBlue.A400,
             fontSize: isDisabledCounter ? 30 : 80,
           }}
         >
@@ -69,7 +68,7 @@ export const Counter = (props: CounterProps) => {
               endIcon={<AddIcon />}
               disableElevation
               sx={{ flexGrow: 1 }}
-              disabled={isDisabledCounter || counter === settings.max}
+              disabled={isDisabledCounter || isDisabledIncrement}
               onClick={handleIncrement}
             >
               inc
@@ -81,7 +80,7 @@ export const Counter = (props: CounterProps) => {
                 endIcon={<DeleteIcon />}
                 disableElevation
                 sx={{ width: "100%" }}
-                disabled={isDisabledCounter || counter === settings.min}
+                disabled={isDisabledCounter || isDisabledReset}
                 onClick={handleReset}
               >
                 reset

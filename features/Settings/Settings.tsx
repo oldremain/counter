@@ -1,21 +1,21 @@
 import { useState } from "react";
 import Card from "@mui/material/Card";
-import type { Settings as SettingsType, Sheet } from "@/types";
+import type { Settings as SettingsType, Sheet } from "@common/types";
 import {
   validateMax,
   validateMin,
   validateSettings,
   validateStep,
-} from "@/lib";
-import { BorderBox } from "@/components/BorderBox";
+} from "@common/lib";
+import { BorderBox } from "@common/components/BorderBox";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { Button } from "../Button";
+import { Button } from "../../common/components/Button";
 import DoneIcon from "@mui/icons-material/Done";
-import { TextField } from "@/components/TextField/index";
+import { TextField } from "@common/components/TextField/TextField";
 import * as s from "./Settings.styles";
 
-type SettingsProps = {
+type Props = {
   settings?: SettingsType;
   error: boolean;
   sheet: Sheet;
@@ -25,7 +25,7 @@ type SettingsProps = {
   setSheet: (v: Sheet) => void;
 };
 
-export const Settings = (props: SettingsProps) => {
+export const Settings = (props: Props) => {
   const {
     settings,
     error,

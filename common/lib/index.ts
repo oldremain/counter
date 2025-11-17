@@ -1,4 +1,4 @@
-import type { Settings } from "@/types";
+import type { Settings } from "@common/types";
 
 export const DEFAULT_SETTINGS = {
   min: 0,
