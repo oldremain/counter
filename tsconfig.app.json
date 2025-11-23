@@ -27,9 +27,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@common/*": ["common/*"],
-      "@features/*": ["features/*"],
-      "@app/*": ["app/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"]

@@ -1,8 +1,8 @@
 import Decimal from "decimal.js";
-import type { Settings, Sheet } from "@common/types";
+import type { AppState } from "@/common/types";
 import Card from "@mui/material/Card";
-import { BorderBox } from "@common/components/BorderBox";
-import { Button } from "@common/components/Button";
+import { BorderBox } from "@/common/components/BorderBox";
+import { Button } from "@/common/components/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,42 +11,37 @@ import { lightBlue, red } from "@mui/material/colors";
 import * as s from "./Counter.styles";
 
 type Props = {
-  counter: number;
-  settings: Settings;
-  sheet: Sheet;
-  error: boolean;
+  appState: AppState;
   setCount: (v: number) => void;
-  setSheet: (v: Sheet) => void;
 };
 
 export const Counter = (props: Props) => {
-  const { counter, settings, sheet, error, setCount, setSheet } = props;
+  const { appState, setCount } = props;
 
-  const isDisabledCounter = error || sheet === "settings";
-  const isDisabledIncrement = counter >= settings.max;
-  const isDisabledReset = counter === settings.min;
+  const isDisabledCounter =
+    appState.error || appState.activeSheet === "settings";
+  const isDisabledIncrement = appState.counter >= appState.max;
+  const isDisabledReset = appState.counter === appState.min;
 
   let boxContent;
-  if (error) {
+  if (appState?.error) {
     boxContent = "Incorrect value!";
-  } else if (sheet === "settings") {
+  } else if (appState.activeSheet === "settings") {
     boxContent = 'Enter values and press "set"';
   } else {
-    boxContent = counter;
+    boxContent = appState.counter;
   }
 
   const handleIncrement = () => {
     if (isDisabledCounter || isDisabledIncrement) return;
-    const c = new Decimal(counter);
-    const nextValue = c.plus(settings.step).toNumber();
-    setSheet("counter");
+    const c = new Decimal(appState.counter);
+    const nextValue = c.plus(appState.step).toNumber();
     setCount(nextValue);
   };
 
   const handleReset = () => {
     if (isDisabledCounter) return;
-    setSheet("counter");
-    setCount(settings.min);
+    setCount(appState.min);
   };
 
   return (
@@ -55,7 +50,10 @@ export const Counter = (props: Props) => {
         <BorderBox
           sx={{
             ...s.counterWrp,
-            color: isDisabledIncrement || error ? red.A700 : lightBlue.A400,
+            color:
+              isDisabledIncrement || appState?.error
+                ? red.A700
+                : lightBlue.A400,
             fontSize: isDisabledCounter ? 30 : 80,
           }}
         >

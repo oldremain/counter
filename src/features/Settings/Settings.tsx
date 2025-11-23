@@ -1,61 +1,62 @@
 import { useState } from "react";
 import Card from "@mui/material/Card";
-import type { Settings as SettingsType, Sheet } from "@common/types";
+import type { AppState } from "@/common/types";
 import {
   validateMax,
   validateMin,
   validateSettings,
   validateStep,
-} from "@common/lib";
-import { BorderBox } from "@common/components/BorderBox";
+} from "@/common/lib";
+import {
+  type UpdateSettingsPayload,
+  type UpdateErrorPayload,
+} from "@/model/appReducer";
+import { BorderBox } from "@/common/components/BorderBox";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import { Button } from "../../common/components/Button";
+import { Button } from "@/common/components/Button";
 import DoneIcon from "@mui/icons-material/Done";
-import { TextField } from "@common/components/TextField/TextField";
+import { TextField } from "@/common/components/TextField/TextField";
 import * as s from "./Settings.styles";
 
 type Props = {
-  settings?: SettingsType;
-  error: boolean;
-  sheet: Sheet;
-  setSettings: (v: SettingsType) => void;
-  saveSettings: (v: SettingsType) => void;
-  setError: (v: boolean) => void;
-  setSheet: (v: Sheet) => void;
+  appState?: AppState;
+  setSettings: (v: UpdateSettingsPayload) => void;
+  saveSettings: (v: AppState) => void;
+  setError: (v: UpdateErrorPayload) => void;
 };
 
 export const Settings = (props: Props) => {
-  const {
-    settings,
-    error,
-    sheet,
-    setSettings,
-    saveSettings,
-    setError,
-    setSheet,
-  } = props;
+  const { appState, setSettings, saveSettings, setError } = props;
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const isValidMax = validateMax(settings as SettingsType);
-  const isValidMin = validateMin(settings as SettingsType);
-  const isValidStep = validateStep(settings as SettingsType);
+  const isValidMax = validateMax(appState as AppState);
+  const isValidMin = validateMin(appState as AppState);
+  const isValidStep = validateStep(appState as AppState);
 
-  const handleChange = (v: number, key: "max" | "min" | "step") => {
+  const handleChange = (obj: {
+    key: "max" | "min" | "step";
+    value: number;
+  }) => {
     setIsEditing(true);
-    const newSettings = {
-      ...settings,
-      [key]: v,
-    } as SettingsType;
 
-    setSettings(newSettings);
-    setError(!validateSettings(newSettings));
-    setSheet("settings");
+    const newValue = {
+      [obj.key]: obj.value,
+    } as UpdateSettingsPayload;
+
+    setSettings(newValue);
+
+    setError({
+      error: !validateSettings({
+        ...appState,
+        ...newValue,
+      } as AppState),
+    });
   };
 
   const handleSaveSettings = () => {
-    saveSettings(settings as SettingsType);
+    saveSettings(appState as AppState);
   };
 
   return (
@@ -69,9 +70,11 @@ export const Settings = (props: Props) => {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
-                  value={settings?.max}
+                  value={appState?.max}
                   error={!isValidMax}
-                  setValue={(v) => handleChange(v as number, "max")}
+                  setValue={(v) =>
+                    handleChange({ key: "max", value: v as number })
+                  }
                 />
               </Grid>
             </Grid>
@@ -85,9 +88,11 @@ export const Settings = (props: Props) => {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
-                  value={settings?.min}
+                  value={appState?.min}
                   error={!isValidMin}
-                  setValue={(v) => handleChange(v as number, "min")}
+                  setValue={(v) =>
+                    handleChange({ key: "min", value: v as number })
+                  }
                 />
               </Grid>
             </Grid>
@@ -101,9 +106,11 @@ export const Settings = (props: Props) => {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
-                  value={settings?.step}
+                  value={appState?.step}
                   error={!isValidStep}
-                  setValue={(v) => handleChange(v as number, "step")}
+                  setValue={(v) =>
+                    handleChange({ key: "step", value: v as number })
+                  }
                 />
               </Grid>
             </Grid>
@@ -112,9 +119,15 @@ export const Settings = (props: Props) => {
         <BorderBox textAlign={"center"}>
           <Button
             variant="contained"
-            endIcon={isEditing && !error && <DoneIcon sx={s.doneIcon} />}
+            endIcon={
+              isEditing && !appState?.error && <DoneIcon sx={s.doneIcon} />
+            }
             sx={s.setBtn}
-            disabled={!isEditing || error || sheet === "counter"}
+            disabled={
+              !isEditing ||
+              appState?.error ||
+              appState?.activeSheet === "counter"
+            }
             onClick={handleSaveSettings}
           >
             set
