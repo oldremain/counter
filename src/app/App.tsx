@@ -1,34 +1,34 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import {
   DEFAULT_APP_STATE,
-  appReducer,
   initAppStateAC,
   updateCounterAC,
   updateSettingsAC,
-  updateErrorAC,
+  setErrorAC,
   type UpdateSettingsPayload,
-  type UpdateErrorPayload,
+  type SetErrorPayload,
 } from "@/model/appReducer";
 import type { AppState } from "@/common/types";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useAppStorage } from "@/common/hooks/useAppStorage";
-import { Settings } from "@/features/Settings/Settings";
-import { Counter } from "@/features/Counter/Counter";
+import { useAppSelector } from "@/common/hooks/useAppSelector";
+import { selectAppState } from "@/model/appSelector";
+import { Settings } from "@/features/settings/Settings";
+import { Counter } from "@/features/counter/Counter";
 import * as s from "./App.styles";
 
 export const App = () => {
   const [storage, isInitializedStorage, saveToStorage] =
     useAppStorage(DEFAULT_APP_STATE);
 
-  const [appState, dispatchAppState] = useReducer(
-    appReducer,
-    DEFAULT_APP_STATE
-  );
+  const appState = useAppSelector(selectAppState);
+  const dispatch = useDispatch();
 
   const saveSettingsHandler = (settings: AppState) => {
-    dispatchAppState(updateCounterAC({ counter: settings.min }));
+    dispatch(updateCounterAC({ counter: settings.min }));
     saveToStorage({
       min: settings.min,
       max: settings.max,
@@ -37,21 +37,21 @@ export const App = () => {
   };
 
   const setSettingsHandler = (settings: UpdateSettingsPayload) => {
-    dispatchAppState(updateSettingsAC(settings));
+    dispatch(updateSettingsAC(settings));
   };
 
-  const setErrorHandler = (payload: UpdateErrorPayload) => {
-    dispatchAppState(updateErrorAC(payload));
+  const setErrorHandler = (payload: SetErrorPayload) => {
+    dispatch(setErrorAC(payload));
   };
 
   const setCountHandler = (counter: number) => {
-    dispatchAppState(updateCounterAC({ counter }));
+    dispatch(updateCounterAC({ counter }));
   };
 
   useEffect(() => {
     //First we should wait until read data from localStorage
     if (isInitializedStorage) {
-      dispatchAppState(
+      dispatch(
         initAppStateAC({
           min: storage.min,
           max: storage.max,

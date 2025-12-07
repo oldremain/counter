@@ -1,4 +1,5 @@
 import type { AppState } from "@/common/types";
+import { createAction, createReducer } from "@reduxjs/toolkit";
 
 export const DEFAULT_APP_STATE: AppState = {
   min: 0,
@@ -10,94 +11,45 @@ export const DEFAULT_APP_STATE: AppState = {
   isInitialized: false,
 };
 
-export const appReducer = (state: AppState, action: Action): AppState => {
-  switch (action.type) {
-    case "update_settings": {
+export const updateSettingsAC = createAction<
+  Partial<Pick<AppState, "min" | "max" | "step">>
+>("appState/updateSettings");
+
+export type UpdateSettingsPayload = Parameters<typeof updateSettingsAC>[0];
+
+export const setErrorAC =
+  createAction<Pick<AppState, "error">>("appState/setError");
+
+export type SetErrorPayload = Parameters<typeof setErrorAC>[0];
+
+export const updateCounterAC = createAction<Pick<AppState, "counter">>(
+  "appState/updateCounter"
+);
+
+export const initAppStateAC =
+  createAction<Omit<AppState, "error" | "activeSheet">>("appState/init");
+
+export const appReducer = createReducer(DEFAULT_APP_STATE, (builder) => {
+  builder
+    .addCase(updateSettingsAC, (state, { payload }) => {
       return {
         ...state,
-        ...action.payload,
+        ...payload,
         activeSheet: "settings",
       };
-    }
-    case "update_status": {
+    })
+    .addCase(setErrorAC, (state, { payload }) => {
+      state.error = payload.error;
+    })
+    .addCase(updateCounterAC, (state, { payload }) => {
+      state.counter = payload.counter;
+      state.activeSheet = "counter";
+    })
+    .addCase(initAppStateAC, (state, { payload }) => {
       return {
         ...state,
-        ...action.payload,
-      };
-    }
-    case "update_counter": {
-      return {
-        ...state,
-        ...action.payload,
+        ...payload,
         activeSheet: "counter",
       };
-    }
-    case "init_app_state": {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
-
-//#region SettingsAC
-export type UpdateSettingsPayload = Partial<
-  Pick<AppState, "min" | "max" | "step">
->;
-
-export const updateSettingsAC = (payload: UpdateSettingsPayload) => {
-  return {
-    type: "update_settings",
-    payload,
-  } as const;
-};
-
-export type UpdateSettingsAction = ReturnType<typeof updateSettingsAC>;
-//#endregion
-
-//#region StatusAC
-export type UpdateErrorPayload = Pick<AppState, "error">;
-
-export const updateErrorAC = (payload: UpdateErrorPayload) => {
-  return {
-    type: "update_status",
-    payload,
-  } as const;
-};
-
-export type UpdateErrorAction = ReturnType<typeof updateErrorAC>;
-//#endregion
-
-//#region CounterAC
-export const updateCounterAC = (payload: Pick<AppState, "counter">) => {
-  return {
-    type: "update_counter",
-    payload,
-  } as const;
-};
-
-export type UpdateCounterAction = ReturnType<typeof updateCounterAC>;
-//#endregion
-
-//#region InitAC
-export const initAppStateAC = (
-  payload: Omit<AppState, "error" | "activeSheet">
-) => {
-  return {
-    type: "init_app_state",
-    payload,
-  } as const;
-};
-
-export type InitAppStateAction = ReturnType<typeof initAppStateAC>;
-//#endregion
-
-type Action =
-  | UpdateSettingsAction
-  | UpdateErrorAction
-  | UpdateCounterAction
-  | InitAppStateAction;
+    });
+});

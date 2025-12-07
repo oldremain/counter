@@ -4,11 +4,11 @@ export type AppState = {
   step: number;
   counter: number;
   error: boolean;
-  activeSheet: Sheet;
+  activeSheet: ActiveSheet;
   isInitialized: boolean;
 };
 
-export type Sheet = "settings" | "counter";
+export type ActiveSheet = "settings" | "counter";
 
 export type UpdateSettingsPayload = {
   key: "max" | "min" | "step";

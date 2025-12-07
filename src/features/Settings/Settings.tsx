@@ -9,7 +9,7 @@ import {
 } from "@/common/lib";
 import {
   type UpdateSettingsPayload,
-  type UpdateErrorPayload,
+  type SetErrorPayload,
 } from "@/model/appReducer";
 import { BorderBox } from "@/common/components/BorderBox";
 import Stack from "@mui/material/Stack";
@@ -23,7 +23,7 @@ type Props = {
   appState?: AppState;
   setSettings: (v: UpdateSettingsPayload) => void;
   saveSettings: (v: AppState) => void;
-  setError: (v: UpdateErrorPayload) => void;
+  setError: (v: SetErrorPayload) => void;
 };
 
 export const Settings = (props: Props) => {
@@ -34,6 +34,10 @@ export const Settings = (props: Props) => {
   const isValidMax = validateMax(appState as AppState);
   const isValidMin = validateMin(appState as AppState);
   const isValidStep = validateStep(appState as AppState);
+  const showDoneIcon =
+    isEditing && !appState?.error && appState?.activeSheet === "settings";
+  const isDisabledSetButton =
+    !isEditing || appState?.error || appState?.activeSheet === "counter";
 
   const handleChange = (obj: {
     key: "max" | "min" | "step";
@@ -119,15 +123,9 @@ export const Settings = (props: Props) => {
         <BorderBox textAlign={"center"}>
           <Button
             variant="contained"
-            endIcon={
-              isEditing && !appState?.error && <DoneIcon sx={s.doneIcon} />
-            }
+            endIcon={showDoneIcon && <DoneIcon sx={s.doneIcon} />}
             sx={s.setBtn}
-            disabled={
-              !isEditing ||
-              appState?.error ||
-              appState?.activeSheet === "counter"
-            }
+            disabled={isDisabledSetButton}
             onClick={handleSaveSettings}
           >
             set
